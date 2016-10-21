@@ -34,10 +34,6 @@ describe('Fragment', () => {
       },
     };
 
-    it('returns a fragmentDocument', () => {
-      assert.deepEqual(fragment.fragmentDocument(), doc);
-    });
-
     it('can filter data', () => {
       assert.deepEqual(fragment.filter(data), filteredData);
     });
@@ -54,7 +50,7 @@ describe('Fragment', () => {
     it('throws when checking underspecified data', () => {
       assert.throws(() => {
         fragment.check({
-          name: 'Wrong'
+          name: 'Wrong',
         });
       });
 
@@ -100,10 +96,6 @@ describe('Fragment', () => {
       },
     };
 
-    it('returns a fragmentDocument', () => {
-      assert.deepEqual(fragment.fragmentDocument(), doc);
-    });
-
     it('can filter data', () => {
       assert.deepEqual(fragment.filter(data), filteredData);
     });
@@ -120,7 +112,7 @@ describe('Fragment', () => {
     it('throws when checking underspecified data', () => {
       assert.throws(() => {
         fragment.check({
-          name: 'Wrong'
+          name: 'Wrong',
         });
       });
 
@@ -176,7 +168,7 @@ describe('Fragment', () => {
             // because avatar is not an Avatar
           },
         });
-      })
+      });
     });
   });
 });

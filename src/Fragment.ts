@@ -1,4 +1,5 @@
-import graphql from 'graphql-anywhere';
+import graphqlAnywhere from 'graphql-anywhere';
+
 import {
   getFragmentDefinitions,
   addFragmentsToDocument } from 'graphql-anywhere/lib/src/getFromAST';
@@ -9,29 +10,21 @@ import {
 } from 'graphql';
 
 export default class Fragment {
-  private document: Document;
+  private doc: Document;
   private children: Fragment[];
 
-  constructor(document: Document, ...children: Fragment[]) {
-    this.document = document;
+  constructor(doc: Document, ...children: Fragment[]) {
+    this.doc = doc;
     this.children = children;
 
     this.propType = this.propType.bind(this);
   }
 
-  childFragments(): FragmentDefinition[] {
-    return [].concat(...this.children.map(c => c.fragments()));
-  }
-
-  fragmentDocument(): Document {
-    return addFragmentsToDocument(this.document, this.childFragments());
-  }
-
-  fragments(): FragmentDefinition[] {
+  public fragments(): FragmentDefinition[] {
     return getFragmentDefinitions(this.fragmentDocument());
   }
 
-  filter(data: any): any {
+  public filter(data: any): any {
     const resolver = (
       fieldName: string,
       root: any,
@@ -40,12 +33,12 @@ export default class Fragment {
       info: any
     ) => {
       return root[info.resultKey];
-    }
+    };
 
-    return graphql(resolver, this.fragmentDocument(), data);
+    return graphqlAnywhere(resolver, this.fragmentDocument(), data);
   }
 
-  check(data: any) {
+  public check(data: any) {
     const resolver = (
       fieldName: string,
       root: any,
@@ -57,14 +50,14 @@ export default class Fragment {
         throw new Error(`${info.resultKey} missing on ${root}`);
       }
       return root[info.resultKey];
-    }
+    };
 
-    graphql(resolver, this.fragmentDocument(), data, {}, {}, {
+    graphqlAnywhere(resolver, this.fragmentDocument(), data, {}, {}, {
       fragmentMatcher: () => false,
     });
   }
 
-  propType(props: any, propName: string) {
+  public propType(props: any, propName: string) {
     const prop = props[propName];
     try {
       this.check(prop);
@@ -74,5 +67,13 @@ export default class Fragment {
       // Also we aren't checking for extra fields
       return e;
     }
+  }
+
+  private childFragments(): FragmentDefinition[] {
+    return [].concat(...this.children.map(c => c.fragments()));
+  }
+
+  private fragmentDocument(): Document {
+    return addFragmentsToDocument(this.doc, this.childFragments());
   }
 }
