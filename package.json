@@ -43,6 +43,7 @@
     "@types/chai": "^3.4.32",
     "@types/mocha": "^2.2.31",
     "@types/node": "^6.0.45",
+    "browserify": "^13.1.0",
     "chai": "^3.5.0",
     "colors": "^1.1.2",
     "es6-promise": "^4.0.4",
