@@ -27,7 +27,7 @@ export default class Fragment {
   public filter(data: any[]): any[];
   public filter(data: any): any;
   public filter(data: any | any[]): any {
-    if (data instanceof Array) {
+    if (Array.isArray(data)) {
       return data.map((d) => this.filter(d));
     }
 
