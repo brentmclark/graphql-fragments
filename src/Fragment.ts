@@ -24,7 +24,13 @@ export default class Fragment {
     return getFragmentDefinitions(this.fragmentDocument());
   }
 
-  public filter(data: any): any {
+  public filter(data: any[]): any[];
+  public filter(data: any): any;
+  public filter(data: any | any[]): any {
+    if (data instanceof Array) {
+      return data.map((d) => this.filter(d));
+    }
+
     const resolver = (
       fieldName: string,
       root: any,
@@ -38,7 +44,11 @@ export default class Fragment {
     return graphqlAnywhere(resolver, this.fragmentDocument(), data);
   }
 
-  public check(data: any) {
+  public check(data: any | any[]): void {
+    if (data instanceof Array) {
+      return data.forEach((d) => this.check(d));
+    }
+
     const resolver = (
       fieldName: string,
       root: any,

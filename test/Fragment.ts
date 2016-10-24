@@ -61,6 +61,67 @@ describe('Fragment', () => {
         });
       });
     });
+
+    describe('with an array of data', () => {
+      const arrayData = [{
+        alias: 'Bob',
+        name: 'Wrong',
+        height: 1.89,
+        avatar: {
+          square: 'abc',
+          circle: 'def',
+          triangle: 'qwe',
+        },
+      }, {
+        alias: 'Alice',
+        name: 'Wrongtoo',
+        height: 1.99,
+        avatar: {
+          square: 'xyz',
+        },
+      }];
+      const filteredArrayData = [{
+        alias: 'Bob',
+        height: 1.89,
+        avatar: {
+          square: 'abc',
+        },
+      }, {
+        alias: 'Alice',
+        height: 1.99,
+        avatar: {
+          square: 'xyz',
+        },
+      }];
+
+      it('can filter data', () => {
+        assert.deepEqual(fragment.filter(arrayData), filteredArrayData);
+      });
+
+      it('can check matching data', () => {
+        fragment.check(filteredArrayData);
+      });
+
+      // This doesn't throw but potentially it should?
+      it('can check overspecified data', () => {
+        fragment.check(arrayData);
+      });
+
+      it('throws when checking underspecified data', () => {
+        assert.throws(() => {
+          fragment.check([{
+            name: 'Wrong',
+          }]);
+        });
+
+        assert.throws(() => {
+          fragment.check([{
+            alias: 'Bob',
+            height: 1.89,
+          }]);
+        });
+      });
+    });
   });
 
   describe('with nested fragments', () => {
