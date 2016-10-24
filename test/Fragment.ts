@@ -1,6 +1,7 @@
 import * as chai from 'chai';
 const { assert } = chai;
 import gql from 'graphql-tag';
+import { PropTypes } from 'react';
 
 import Fragment from '../src/Fragment';
 
@@ -62,6 +63,11 @@ describe('Fragment', () => {
       });
     });
 
+    it('can check propTypes', () => {
+      assert.isNull(fragment.propType({ field: data }, 'field'));
+      assert.isNotNull(fragment.propType({ field: { name: 'Wrong' } }, 'field'));
+    });
+
     describe('with an array of data', () => {
       const arrayData = [{
         alias: 'Bob',
@@ -98,28 +104,13 @@ describe('Fragment', () => {
         assert.deepEqual(fragment.filter(arrayData), filteredArrayData);
       });
 
-      it('can check matching data', () => {
-        fragment.check(filteredArrayData);
-      });
-
-      // This doesn't throw but potentially it should?
-      it('can check overspecified data', () => {
-        fragment.check(arrayData);
-      });
-
-      it('throws when checking underspecified data', () => {
-        assert.throws(() => {
-          fragment.check([{
-            name: 'Wrong',
-          }]);
-        });
-
-        assert.throws(() => {
-          fragment.check([{
-            alias: 'Bob',
-            height: 1.89,
-          }]);
-        });
+      it('can check propTypes', () => {
+        const propType = PropTypes.arrayOf(fragment.propType);
+        // We have to do this fireable offence to test our propType can be used
+        assert.isNull(propType({ field: arrayData }, 'field',
+          'a', 'b', 'c', 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED'));
+        assert.isNotNull(propType({ field: { name: 'Wrong' } }, 'field',
+          'a', 'b', 'c', 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED'));
       });
     });
   });

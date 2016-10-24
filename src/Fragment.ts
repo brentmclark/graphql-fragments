@@ -44,11 +44,7 @@ export default class Fragment {
     return graphqlAnywhere(resolver, this.fragmentDocument(), data);
   }
 
-  public check(data: any | any[]): void {
-    if (data instanceof Array) {
-      return data.forEach((d) => this.check(d));
-    }
-
+  public check(data: any): void {
     const resolver = (
       fieldName: string,
       root: any,
