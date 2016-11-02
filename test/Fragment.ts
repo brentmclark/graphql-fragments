@@ -1,6 +1,7 @@
 import * as chai from 'chai';
 const { assert } = chai;
 import gql from 'graphql-tag';
+import { PropTypes } from 'react';
 
 import Fragment from '../src/Fragment';
 
@@ -59,6 +60,57 @@ describe('Fragment', () => {
           alias: 'Bob',
           height: 1.89,
         });
+      });
+    });
+
+    it('can check propTypes', () => {
+      assert.isNull(fragment.propType({ field: data }, 'field'));
+      assert.isNotNull(fragment.propType({ field: { name: 'Wrong' } }, 'field'));
+    });
+
+    describe('with an array of data', () => {
+      const arrayData = [{
+        alias: 'Bob',
+        name: 'Wrong',
+        height: 1.89,
+        avatar: {
+          square: 'abc',
+          circle: 'def',
+          triangle: 'qwe',
+        },
+      }, {
+        alias: 'Alice',
+        name: 'Wrongtoo',
+        height: 1.99,
+        avatar: {
+          square: 'xyz',
+        },
+      }];
+      const filteredArrayData = [{
+        alias: 'Bob',
+        height: 1.89,
+        avatar: {
+          square: 'abc',
+        },
+      }, {
+        alias: 'Alice',
+        height: 1.99,
+        avatar: {
+          square: 'xyz',
+        },
+      }];
+
+      it('can filter data', () => {
+        assert.deepEqual(fragment.filter(arrayData), filteredArrayData);
+      });
+
+      it('can check propTypes', () => {
+        const propType = PropTypes.arrayOf(fragment.propType);
+        // We have to do this fireable offence to test our propType can be used
+        assert.isNull(propType({ field: arrayData }, 'field',
+          'a', 'b', 'c', 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED'));
+        assert.isNotNull(propType({ field: { name: 'Wrong' } }, 'field',
+          'a', 'b', 'c', 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED'));
       });
     });
   });
