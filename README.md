@@ -1,5 +1,13 @@
 # GraphQL Fragments
 
+## NOTE
+
+This package is now deprecated, it's functionality is available in `graphql-anywhere` and `graphql-tag`.
+
+See http://dev.apollodata.com/react/fragments.html
+
+---
+
 Tools for dealing with GraphQL fragments.
 
 [![Build Status](https://travis-ci.org/apollostack/graphql-fragments.svg?branch=master)](https://travis-ci.org/apollostack/graphql-fragments) [![npm version](https://badge.fury.io/js/graphql-fragments.svg)](https://badge.fury.io/js/graphql-fragments)
