@@ -4,7 +4,61 @@
 
 This package is now deprecated, it's functionality is available in `graphql-anywhere` and `graphql-tag`.
 
-See http://dev.apollodata.com/react/fragments.html
+### Migrating
+
+Should be fairly straightforward.
+
+1. Instead of using 
+
+```js
+const fragment = new Fragment(`fragment ...`);
+```
+
+you can just use
+
+```js
+import gql from 'graphql-tag';
+
+const fragment = gql`fragment ...`;
+```
+
+2. No need to pass `X.fragments()` around in a `fragments` option to `watchQuery`, `graphql()` etc.
+
+Instead, embed the fragment in your query document directly with:
+
+```js
+import gql from 'graphql-tag';
+const query = gql`
+  query {
+    field {
+      ...MyFragmentName
+    }
+  }
+  ${fragment}
+`;
+```
+
+3. Fragment utilities now come a functions from `graphql-anywhere`
+
+So it's 
+
+```js
+import gql from 'graphql-tag';
+import { filter, check, propType } from 'graphql-anywhere';
+
+const fragment = gql`fragment ...`;
+const doc = { some: data };
+
+filter(fragment, doc);
+check(fragment, doc);
+
+X.propTypes = {
+  // Note you probably want to use `isRequired`
+  name: propType(fragment).isRequired,
+}
+```
+
+See also http://dev.apollodata.com/react/fragments.html
 
 ---
 
