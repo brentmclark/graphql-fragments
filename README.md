@@ -8,7 +8,7 @@ This package is now deprecated, it's functionality is available in `graphql-anyw
 
 Should be fairly straightforward.
 
-1. Instead of using 
+#### Instead of using 
 
 ```js
 const fragment = new Fragment(`fragment ...`);
@@ -22,7 +22,7 @@ import gql from 'graphql-tag';
 const fragment = gql`fragment ...`;
 ```
 
-2. No need to pass `X.fragments()` around in a `fragments` option to `watchQuery`, `graphql()` etc.
+#### No need to pass `X.fragments()` around in a `fragments` option to `watchQuery`, `graphql()` etc.
 
 Instead, embed the fragment in your query document directly with:
 
@@ -38,7 +38,7 @@ const query = gql`
 `;
 ```
 
-3. Fragment utilities now come a functions from `graphql-anywhere`
+#### Fragment utilities now come a functions from `graphql-anywhere`
 
 So it's 
 
